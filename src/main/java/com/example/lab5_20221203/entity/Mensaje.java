@@ -13,7 +13,6 @@ public class Mensaje {
     private int id;
 
     @Column(name = "regalo_tipo", nullable = false)
-    @Enumerated(EnumType.STRING)
     private String regalo;
 
     @Column(name = "regalo_color")
