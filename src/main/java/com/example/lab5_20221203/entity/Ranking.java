@@ -8,9 +8,8 @@ public class Ranking {
 
     private Integer total;
 
-    @
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @PrimaryKeyJoinColumn(name = "usuario_id")
     private Usuario usuario;
 
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Usuarios</title>
+</head>
+<body>
+<header th:replace="/header :: header"></header>
+<div>
+
+    <div class="apis-grid">
+        <div class="api-card" th:each="user : ${listaUsuarios}">
+            <div class="api-header">
+                <div>
+                    <h3 class="title" th:text="${user.nombre+' '+user.apellido}">Nombre </h3>
+                </div>
+                <i class="fas fa-user-circle" style="font-size: 1.5rem; color: #4299e1;"></i>
+                <div>
+                    <h3 class="" th:text="${user.edad}">Edad </h3>
+                </div>
+            </div>
+
+            <p class="api-description" th:text="${user.descripcion}">
+                Descripción
+            </p>
+
+            <div class="api-meta">
+            <span class="meta-item">
+                <i class="fas fa-code-branch"></i>
+                <span th:text="${user.descripcion}"></span>
+            </span>
+
+            <span class="meta-item">
+                <i class="fas fa-envelope"></i>
+                <span th:text="${user.correo}"></span>
+            </span>
+            </div>
+
+            <div class="api-actions">
+                <a th:href="@{'/enviarMensaje/' + ${user.id}}" class="btn-api btn-primary">
+                    <i class="fas fa-book"></i> Enviar Mensaje
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
