@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+<header th:replace="/header :: header"></header>
+<div class="content">
+
+    <form th:action="@{/registrar}" th:object="${usuario}" method="post" class="card">
+        <div class="card-header">
+            <h3 class="card-title">Registro de nuevo usuario</h3>
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" th:field="*{nombre}" class="form-control" placeholder="Cosme" required/>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Apellidos</label>
+                    <input type="text" th:field="*{apellido}" class="form-control" placeholder="Fulanito" required/>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Edad</label>
+                <input type="number" th:field="*{edad}" class="form-control" placeholder="18" required/>
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <textarea th:field="*{descripcion}" class="form-control" rows="3" placeholder="Una breve descripción"></textarea>
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Correo</label>
+                    <input type="email" th:field="*{correo}" class="form-control" placeholder="@gmail.com"/>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" th:field="*{contrasena}" class="form-control" placeholder="Contraseña"/>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

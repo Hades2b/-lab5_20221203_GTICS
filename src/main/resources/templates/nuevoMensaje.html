@@ -1,21 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Enviar Mensaje</title>
+    <link rel="stylesheet" href="/estilos.css">
 </head>
 <body>
+<header th:replace="/header :: header"></header>
 
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
 
-    <div class="container-fluid">
-        <form th:action="@{/enviarMensaje}" th:object="${mensaje}" method="post" class="card">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted"></small>
-
+            <div class="text-center mb-4">
+                <a th:href="@{/mensajes}" class="btn btn-outline-secondary btn-sm mb-3">
+                    <i class="fas fa-arrow-left mr-1"></i> Volver
+                </a>
+                <h1>
+                    <i class="fas fa-paper-plane text-primary mr-2"></i>
+                    <span th:text="${mensaje.id} ? 'Editar Mensaje' : 'Enviar Mensaje'"></span>
+                </h1>
+                <p class="text-muted">Completa los datos para enviar un mensaje especial</p>
             </div>
-        </form>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-gift mr-2"></i>
+                        <span th:text="${mensaje.id} ? 'Editar Mensaje' : 'Nuevo Mensaje'"></span>
+                    </h4>
+                </div>
+
+                <div class="card-body">
+                    <form th:action="@{/mensajes/enviarMensaje}" method="post" th:object="${mensaje}">
+
+                        <div class="mb-3">
+                            <label for="destinatario" class="form-label">Destinatario</label>
+                            <select class="form-control" id="destinatario" th:field="*{destinatario}" required>
+                                <option th:value="${mensaje.destinatario.id}" th:text="${mensaje.destinatario.nombre+' '+mensaje.destinatario.apellido}" selected>
+                                    Usuario
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tipo de Regalo</label>
+                            <div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           th:field="*{regalo}"
+                                           id="flor" value="Flor">
+                                    <label class="form-check-label" for="flor">Flor Amarilla</label>
+                                    <small class="text-muted d-block">(Color amarillo único)</small>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           th:field="*{regalo}"
+                                           id="carrito" value="Carrito">
+                                    <label class="form-check-label" for="carrito">Carrito</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="color-container">
+                            <label for="color" class="form-label">
+                                <i class="fas fa-palette mr-1"></i>Color del Regalo
+                            </label>
+                            <select class="form-control" id="color" th:field="*{color}">
+                                <option value="Amarillo">Amarillo (para Flor)</option>
+                                <option value="Azul">Azul</option>
+                                <option value="Rojo">Rojo</option>
+                                <option value="Verde">Verde</option>
+                                <option value="Morado">Morado</option>
+                                <option value="Naranja">Naranja</option>
+                            </select>
+                            <small class="text-muted" id="color-help">Selecciona un color para el regalo</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contenido" class="form-label">
+                                <i class="fas fa-comment mr-1"></i>Mensaje
+                            </label>
+                            <textarea class="form-control" id="contenido"
+                                      th:field="*{contenido}"
+                                      rows="5" placeholder="Escribe tu mensaje aquí..."
+                                      required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fechaEnvio" class="form-label">Fecha de Envío</label>
+                            <input id="fechaEnvio" type="text" class="form-control"
+                                   th:value="${mensaje.fechaEnvio != null ? #temporals.format(mensaje.fechaEnvio.toLocalDateTime(), 'dd/MM/yyyy HH:mm') : ''}"
+                                   readonly>
+                        </div>
+
+<!--                        <input type="hidden" th:field="*{id}">-->
+                        <input type="hidden" th:field="*{remitente}">
+
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{/mensajes}" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">
+                                <span th:text="${mensaje.id} ? 'Actualizar' : 'Enviar'"></span> Mensaje
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const florRadio = document.getElementById('flor');
+        const carritoRadio = document.getElementById('carrito');
+        const colorSelect = document.getElementById('color');
+        const colorHelp = document.getElementById('color-help');
+
+        function actualizarColorSelector() {
+            if (florRadio.checked) {
+                colorSelect.value = 'Amarillo';
+                colorSelect.disabled = true;
+                colorHelp.textContent = 'Color fijo para Flor Amarilla';
+            } else {
+                colorSelect.disabled = false;
+                colorHelp.textContent = 'Selecciona un color para el Carrito';
+            }
+        }
+
+        florRadio.addEventListener('change', actualizarColorSelector);
+        carritoRadio.addEventListener('change', actualizarColorSelector);
+
+        actualizarColorSelector();
+
+    });
+</script>
+
 </body>
 </html>
